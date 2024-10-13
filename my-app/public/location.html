@@ -1,71 +1,90 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>User Location with Leaflet</title>
+    <title>Your Device Location</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <style>
-      #map {
-        height: 600px; /* Set the height of the map */
-        width: 100%; /* Set the width of the map */
-      }
+        #map {
+            height: 600px; /* Set the height of the map */
+            width: 100%; /* Set the width of the map */
+        }
+        body {
+            background-color: #f8d7da; /* Pink background */
+            color: #721c24; /* Dark text color for visibility */
+            font-family: Arial, sans-serif;
+        }
     </style>
-  </head>
-  <body>
-    <h1>Your Current Location</h1>
+</head>
+<body>
+    <h1>Your Device Location</h1>
+    <div id="location"></div>
     <div id="map"></div>
 
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script>
-      // Function to get the user's location
-      function getUserLocation() {
-        if (navigator.geolocation) {
-          navigator.geolocation.getCurrentPosition(showPosition, showError);
-        } else {
-          alert("Geolocation is not supported by this browser.");
-        }
-      }
+        let map; // Global map variable
 
-      // Show the user's position on the map
-      function showPosition(position) {
-        const lat = position.coords.latitude;
-        const lon = position.coords.longitude;
+        // Function to fetch device location from the backend
+        async function fetchDeviceLocation() {
+            console.log("Fetching device location...");
+
+            try {
+                const response = await fetch('http://localhost:5000/get-device-location'); // Ensure this URL matches your Flask backend
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                const data = await response.json();
+                displayLocation(data); // Call displayLocation with data from the backend
+                initMap(data.hard_coded); // Initialize the map with hard-coded coordinates
+            } catch (error) {
+                console.error('There was a problem with the fetch operation:', error);
+            }
+        }
+
+        // Display the device location on the webpage
+        function displayLocation(data) {
+            const locationDiv = document.getElementById("location");
+            locationDiv.innerHTML = `        
+                <p><strong>Hard-Coded Coordinates:</strong></p>
+                <p><strong>Latitude:</strong> ${data.hard_coded.latitude}</p>
+                <p><strong>Longitude:</strong> ${data.hard_coded.longitude}</p>
+                <p><strong>Civic Address:</strong> ${data.hard_coded.civic_address}</p>
+                <p><strong>API Call Coordinates:</strong></p>
+                <p><strong>Latitude:</strong> ${data.api_call.latitude}</p>
+                <p><strong>Longitude:</strong> ${data.api_call.longitude}</p>
+                <p><strong>Civic Address:</strong> ${data.api_call.civic_address || 'N/A'}</p>
+            `;
+        }
 
         // Initialize the Leaflet map
-        const map = L.map("map").setView([lat, lon], 13);
+        function initMap(hardCodedData) {
+            const lat = hardCodedData.latitude;
+            const lon = hardCodedData.longitude;
 
-        // Load and display a tile layer
-        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-          maxZoom: 19,
-          attribution: "© OpenStreetMap",
-        }).addTo(map);
+            // Create a new map instance centered on the hard-coded coordinates
+            map = L.map("map").setView([lat, lon], 13);
 
-        // Add a marker at the user's location
-        const marker = L.marker([lat, lon]).addTo(map);
-        marker.bindPopup("You are here!").openPopup();
-      }
+            // Load and display a tile layer
+            L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+                maxZoom: 19,
+                attribution: "© OpenStreetMap",
+            }).addTo(map);
 
-      // Handle errors
-      function showError(error) {
-        switch (error.code) {
-          case error.PERMISSION_DENIED:
-            alert("User denied the request for Geolocation.");
-            break;
-          case error.POSITION_UNAVAILABLE:
-            alert("Location information is unavailable.");
-            break;
-          case error.TIMEOUT:
-            alert("The request to get user location timed out.");
-            break;
-          case error.UNKNOWN_ERROR:
-            alert("An unknown error occurred.");
-            break;
+            // Add a marker for the hard-coded location
+            const hardCodedMarker = L.marker([lat, lon]).addTo(map);
+            hardCodedMarker.bindPopup("Hard-Coded Location: Husky Union Building").openPopup();
+
+            // Optionally add a marker for the API location if needed
+            // const apiLat = data.api_call.latitude; 
+            // const apiLon = data.api_call.longitude; 
+            // const apiMarker = L.marker([apiLat, apiLon]).addTo(map);
+            // apiMarker.bindPopup("API Location").openPopup();
         }
-      }
 
-      // Call the function to get the user's location
-      getUserLocation();
+        // Call the function to fetch the device location
+        fetchDeviceLocation();
     </script>
-  </body>
+</body>
 </html>

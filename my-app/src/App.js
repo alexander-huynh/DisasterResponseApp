@@ -14,11 +14,12 @@ function App() {
         <header className="App-header">
           <p>Disaster Relief App</p>
           <nav>
-            <ul>
-              <li><Link to="/nav">Navigation Page</Link></li>
-              <li><Link to="/help">Help Page</Link></li>
-              <li><Link to="/emergency">Emergency Page</Link></li>
-              <li><Link to="/location">Location Page</Link></li>
+            <ul className="nav-menu">
+              <li><Link className="nav-button" to="/nav">Navigation Page</Link></li>
+              {/* Temporarily removed buttons for Help, Emergency, and Location Pages */}
+              {/* <li><Link className="nav-button" to="/help">Help Page</Link></li> */}
+              {/* <li><Link className="nav-button" to="/emergency">Emergency Page</Link></li> */}
+              {/* <li><Link className="nav-button" to="/location">Location Page</Link></li> */}
             </ul>
           </nav>
         </header>

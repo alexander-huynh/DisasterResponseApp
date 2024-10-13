@@ -2,13 +2,52 @@
     display: flex;
     flex-direction: column;
     align-items: center; /* Center items horizontally */
-    justify-content: center; /* Center items vertically */
+    justify-content: flex-start; /* Align items to the start of the container */
     height: 100vh; /* Full height */
     background-color: #ffe4e1; /* Light pink background */
-  }
-  
-  .emergency-list {
+    padding-top: 1px; /* Add padding at the top */
+}
+
+.pink-logo {
+    width: 150px; /* Adjust size as needed */
+    height: auto; /* Maintain aspect ratio */
+    margin-bottom: 1px; /* Space below logo */
+}
+
+.emergency-list {
     list-style-type: none; /* Remove bullet points */
     padding: 0; /* Remove padding */
-  }
-  
+}
+
+.emergency-input {
+    padding: 10px; /* Add some padding */
+    margin-bottom: 20px; /* Space below the input */
+    border: 2px solid #721c24; /* Dark border for input */
+    border-radius: 5px; /* Rounded corners */
+}
+
+.emergency-button {
+    padding: 10px 20px; /* Add padding for button */
+    background-color: #f8d7da; /* Light pink background for button */
+    color: #721c24; /* Dark text color */
+    border: none; /* No border */
+    border-radius: 5px; /* Rounded corners */
+    cursor: pointer; /* Cursor pointer on hover */
+    margin-bottom: 20px; /* Space below button */
+}
+
+.emergency-option {
+    padding: 10px 20px; /* Add padding for option buttons */
+    background-color: #f8d7da; /* Light pink background for buttons */
+    color: #721c24; /* Dark text color */
+    border: none; /* No border */
+    border-radius: 5px; /* Rounded corners */
+    cursor: pointer; /* Cursor pointer on hover */
+    margin: 5px 0; /* Space between buttons */
+    transition: background-color 0.3s; /* Transition for hover effect */
+}
+
+.emergency-option:hover {
+    background-color: #721c24; /* Darker on hover */
+    color: white; /* Change text color to white */
+}
