@@ -1,40 +1,44 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, send_from_directory
 from flask_cors import CORS
 import network_as_code as nac
 from network_as_code.models.device import DeviceIpv4Addr
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='../my-app/public')  # Set the static folder to serve the HTML file
 CORS(app)  # Enable CORS to allow requests from React
 
-def get_device_location():    
-    # We initialize the client object with your application key
+@app.route('/', methods=['GET'])
+def home():
+    return "Welcome to the Disaster Relief App!"
+
+@app.route('/get-device-location', methods=['GET'])
+def get_device_location():
+    # Your logic to retrieve location
     client = nac.NetworkAsCodeClient(
-        token="5af9430f4cmsh955148f812e1c24p1b11b9jsn4b79cbfbc98f",
+        token="your_token_here",
     )
     
     my_device = client.devices.get(
-        "0b7052f9-49c4-4669-bade-70fc7bb36b96@testcsp.net",
+        "your_device_id",
         ipv4_address=DeviceIpv4Addr(
             public_address="233.252.0.2",
             private_address="192.0.2.25",
             public_port=80
         ),
         ipv6_address="2001:db8:1234:5678:9abc:def0:fedc:ba98",
-        # The phone number does not accept spaces or parentheses
         phone_number="+36721601234567"
     )
     
-    # Specify the maximum amount of time accepted
-    # to get location information, it's a mandatory parameter.
-    # If the amount in seconds is not given, the default will be 60 seconds.
     location = my_device.location(max_age=3600)
     
-    # The location object contains fields for longitude, latitude and also elevation
-    longitude = location.longitude
-    latitude = location.latitude
-    
-    
-    print(longitude)
-    print(latitude)
-    print(location.civic_address)
+    return jsonify({
+        "longitude": location.longitude,
+        "latitude": location.latitude,
+        "civic_address": location.civic_address
+    })
 
+@app.route('/location', methods=['GET'])
+def serve_location_page():
+    return send_from_directory(app.static_folder, 'location.html')  # Serve the location.html file
+
+if __name__ == '__main__':
+    app.run(debug=True)
