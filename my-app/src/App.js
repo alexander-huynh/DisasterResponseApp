@@ -12,7 +12,6 @@ function App() {
     <Router>
       <div className="App">
         <header className="App-header">
-          <p>Disaster Relief App</p>
           <nav>
             <ul className="nav-menu">
               <li><Link className="nav-button" to="/nav">Navigation Page</Link></li>
