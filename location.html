@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>User Location with Leaflet</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <style>
+      #map {
+        height: 600px; /* Set the height of the map */
+        width: 100%; /* Set the width of the map */
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Your Current Location</h1>
+    <div id="map"></div>
+
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script>
+      // Function to get the user's location
+      function getUserLocation() {
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(showPosition, showError);
+        } else {
+          alert("Geolocation is not supported by this browser.");
+        }
+      }
+
+      // Show the user's position on the map
+      function showPosition(position) {
+        const lat = position.coords.latitude;
+        const lon = position.coords.longitude;
+
+        // Initialize the Leaflet map
+        const map = L.map("map").setView([lat, lon], 13);
+
+        // Load and display a tile layer
+        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+          maxZoom: 19,
+          attribution: "© OpenStreetMap",
+        }).addTo(map);
+
+        // Add a marker at the user's location
+        const marker = L.marker([lat, lon]).addTo(map);
+        marker.bindPopup("You are here!").openPopup();
+      }
+
+      // Handle errors
+      function showError(error) {
+        switch (error.code) {
+          case error.PERMISSION_DENIED:
+            alert("User denied the request for Geolocation.");
+            break;
+          case error.POSITION_UNAVAILABLE:
+            alert("Location information is unavailable.");
+            break;
+          case error.TIMEOUT:
+            alert("The request to get user location timed out.");
+            break;
+          case error.UNKNOWN_ERROR:
+            alert("An unknown error occurred.");
+            break;
+        }
+      }
+
+      // Call the function to get the user's location
+      getUserLocation();
+    </script>
+  </body>
+</html>
