@@ -19,10 +19,12 @@
 </head>
 <body>
     <h1>Your Device Location</h1>
+    <p>Here, you can find shelters near your precise location! Click on the blue icons to find information on a shelter's name, phone number, & address.</p>
     <div id="location"></div>
     <div id="map"></div>
 
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script>
         let map; // Global map variable
 
@@ -76,15 +78,72 @@
             const hardCodedMarker = L.marker([lat, lon]).addTo(map);
             hardCodedMarker.bindPopup("Hard-Coded Location: Husky Union Building").openPopup();
 
-            // Optionally add a marker for the API location if needed
-            // const apiLat = data.api_call.latitude; 
-            // const apiLon = data.api_call.longitude; 
-            // const apiMarker = L.marker([apiLat, apiLon]).addTo(map);
-            // apiMarker.bindPopup("API Location").openPopup();
+            // Add the shelter markers
+            addSheltersToMap(map);
         }
 
-        // Call the function to fetch the device location
+        // Function to get the user's location and homeless shelters
+        const shelters = [
+            {"name": "Roots Young Adult Shelter", "latitude": 47.66248127145029, "longitude": -122.3072860470316, "address": "4541 19th Ave NE, Seattle, WA 98105", "phone": "+12066321635"},
+            {"name": "Elizabeth Gregory Home", "latitude": 47.66586714776774, "longitude": -122.30749287743375, "address": "1911 Aurora Ave N, Seattle, WA 98109", "phone": "+12067290262"},
+            {"name": "U-District Youth Center", "latitude": 47.6615, "longitude": -122.3171, "address": "5031 University Way NE, Seattle, WA 98105", "phone": "+12066116230"},
+            {"name": "Lifewire - Transitional Housing", "latitude": 47.6622, "longitude": -122.3213, "address": "2016 72nd Ave NE, Seattle, WA 98115", "phone": "+12063681873"},
+            {"name": "The Salvation Army - Seattle", "latitude": 47.6577, "longitude": -122.3297, "address": "1101 W. 15th Ave, Seattle, WA 98122", "phone": "+12064417147"},
+            {"name": "Y-Women's Shelter", "latitude": 47.6610, "longitude": -122.3250, "address": "1515 2nd Ave, Seattle, WA 98101", "phone": "+12063268918"},
+            {"name": "New Horizons", "latitude": 47.6572, "longitude": -122.3170, "address": "4526 8th Ave NE, Seattle, WA 98105", "phone": "+12062659111"}
+        ];
+
+        function addSheltersToMap(map) {
+            shelters.forEach((shelter) => {
+                const marker = L.marker([shelter.latitude, shelter.longitude], {
+                    color: 'green'
+                }).addTo(map);
+                marker.bindPopup(
+                    `<b>${shelter.name}</b><br>Address: ${shelter.address}<br>Phone: ${shelter.phone}`
+                );
+            });
+        }
+
+        // Show the user's position on the map
+        function showPosition(position) {
+            const lat = position.coords.latitude;
+            const lon = position.coords.longitude;
+
+            // Add a marker at the user's location
+            const marker = L.marker([lat, lon]).addTo(map);
+            marker.bindPopup("You are here!").openPopup();
+        }
+
+        // Handle errors
+        function showError(error) {
+            switch (error.code) {
+                case error.PERMISSION_DENIED:
+                    alert("User denied the request for Geolocation.");
+                    break;
+                case error.POSITION_UNAVAILABLE:
+                    alert("Location information is unavailable.");
+                    break;
+                case error.TIMEOUT:
+                    alert("The request to get user location timed out.");
+                    break;
+                case error.UNKNOWN_ERROR:
+                    alert("An unknown error occurred.");
+                    break;
+            }
+        }
+
+        // Call the function to get the user's location
+        async function getUserLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(showPosition, showError);
+            } else {
+                alert("Geolocation is not supported by this browser.");
+            }
+        }
+
+        // Initialize the app by fetching device location and user location
         fetchDeviceLocation();
+        getUserLocation();
     </script>
 </body>
 </html>
