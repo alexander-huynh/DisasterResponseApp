@@ -1,28 +1,27 @@
 .nav-container {
-    text-align: center;
-  }
-  
-  .nav-menu {
+    text-align: center; /* Center the navigation items */
+}
+
+.nav-menu {
     list-style-type: none; /* Remove bullet points */
-    padding: 0; /* Remove padding */
-    margin: 0; /* Remove margin */
-  }
-  
-  .nav-menu li {
-    margin: 10px 0; /* Space between items */
-  }
-  
-  .nav-menu a {
+    padding: 20px 0; /* Adjust padding for more vertical space */
+    margin: 40px 0; /* Add margin to separate from other content */
+}
+
+.nav-menu li {
+    margin: 20px 0; /* Space between items */
+}
+
+.nav-menu a {
     display: inline-block; /* Makes the link behave like a button */
-    padding: 10px 20px; /* Adds padding to the button */
+    padding: 12px 25px; /* Adds padding to the button */
     background-color: #d36f88; /* Dark pink button color */
     color: white; /* Text color */
     text-decoration: none; /* Remove underline */
     border-radius: 5px; /* Rounded corners */
     transition: background-color 0.3s; /* Smooth transition for hover effect */
-  }
-  
-  .nav-menu a:hover {
+}
+
+.nav-menu a:hover {
     background-color: #c95b76; /* Slightly darker shade on hover */
-  }
-  
+}

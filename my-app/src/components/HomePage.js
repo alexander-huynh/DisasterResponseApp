@@ -1,3 +1,4 @@
+// HomePage.js
 import React from 'react';
 import './HomePage.css'; // Ensure this file exists and is linked correctly
 

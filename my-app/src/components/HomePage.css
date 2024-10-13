@@ -1,21 +1,35 @@
 .home-container {
-    display: flex;
-    flex-direction: column; /* Stack items vertically */
-    justify-content: center; /* Center vertically */
-    align-items: center; /* Center horizontally */
-    height: 100vh; /* Full viewport height */
-    background-color: #ffe4e1; /* Light pink background */
-  }
-  
-  .pink-logo {
-    width:500px; /* Adjust size as needed */
+    text-align: center; /* Center text */
+    margin-top: 50px; /* Adjust top margin for spacing */
+}
+
+.pink-logo {
+    width: 500px; /* Adjust size as needed */
     margin-top: 20px; /* Space above the logo */
-  }
-  
-  h1 {
+    margin-bottom: 20px; /* Space below the logo */
+}
+
+h1 {
     font-size: 2rem; /* Adjust font size */
     color: #333; /* Dark text color for contrast */
     text-align: center; /* Center the title */
     margin-bottom: 20px; /* Space below the title */
-  }
-  
+}
+
+.nav-button {
+    display: inline-block;
+    padding: 15px 30px; /* Adjust padding for a more button-like appearance */
+    background-color: #ff4d4d; /* Softer red background */
+    color: white; /* Text color */
+    border: 10px solid #808080; /* Grey border for a physical button effect */
+    border-radius: 25px; /* Rounded button */
+    font-size: 24px; /* Font size for button */
+    cursor: pointer; /* Change cursor on hover */
+    transition: background-color 0.3s, transform 0.3s; /* Smooth transition for hover effect */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+}
+
+.nav-button:hover {
+    background-color: #ff1a1a; /* Darker red on hover */
+    transform: scale(1.05); /* Slightly enlarge button on hover */
+}

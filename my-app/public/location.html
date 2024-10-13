@@ -20,8 +20,7 @@
 <body>
     <h1>Your Device Location</h1>
     <p>Here, you can find shelters near your precise location! Click on the blue icons to find information on a shelter's name, phone number, & address.</p>
-    <div id="location"></div>
-    <div id="map"></div>
+    <div id="map"></div> <!-- Keep only the map div -->
 
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
@@ -38,26 +37,10 @@
                     throw new Error('Network response was not ok');
                 }
                 const data = await response.json();
-                displayLocation(data); // Call displayLocation with data from the backend
                 initMap(data.hard_coded); // Initialize the map with hard-coded coordinates
             } catch (error) {
                 console.error('There was a problem with the fetch operation:', error);
             }
-        }
-
-        // Display the device location on the webpage
-        function displayLocation(data) {
-            const locationDiv = document.getElementById("location");
-            locationDiv.innerHTML = `        
-                <p><strong>Hard-Coded Coordinates:</strong></p>
-                <p><strong>Latitude:</strong> ${data.hard_coded.latitude}</p>
-                <p><strong>Longitude:</strong> ${data.hard_coded.longitude}</p>
-                <p><strong>Civic Address:</strong> ${data.hard_coded.civic_address}</p>
-                <p><strong>API Call Coordinates:</strong></p>
-                <p><strong>Latitude:</strong> ${data.api_call.latitude}</p>
-                <p><strong>Longitude:</strong> ${data.api_call.longitude}</p>
-                <p><strong>Civic Address:</strong> ${data.api_call.civic_address || 'N/A'}</p>
-            `;
         }
 
         // Initialize the Leaflet map
@@ -95,9 +78,7 @@
 
         function addSheltersToMap(map) {
             shelters.forEach((shelter) => {
-                const marker = L.marker([shelter.latitude, shelter.longitude], {
-                    color: 'green'
-                }).addTo(map);
+                const marker = L.marker([shelter.latitude, shelter.longitude]).addTo(map);
                 marker.bindPopup(
                     `<b>${shelter.name}</b><br>Address: ${shelter.address}<br>Phone: ${shelter.phone}`
                 );

@@ -1,0 +1,9 @@
+.location-info {
+    background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent white background */
+    border-radius: 10px; /* Rounded corners for a softer look */
+    padding: 20px; /* Space inside the info box */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
+    margin: 20px; /* Space around the location info box */
+    max-width: 600px; /* Limit the maximum width for readability */
+    text-align: left; /* Align text to the left */
+}
